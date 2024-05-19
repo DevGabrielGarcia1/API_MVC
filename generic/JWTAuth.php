@@ -12,10 +12,10 @@ class JWTAuth
 
     public function criarChave($dados)
     {
-        $hora = time();
+        $hora = time(); //Em segundos
         $payload = [
             'iat' => $hora,
-            'exp' => $hora + 180000,
+            'exp' => $hora + 300,
             'uid' => $dados
         ];
 
@@ -34,6 +34,7 @@ class JWTAuth
             $token = str_replace('Bearer ', '', $autorizacao);
             $decodificar = Jwt::decode($token, new Key($this->key, 'HS256')); //payload
             $hora = time();
+            
             if ($hora > $decodificar->exp) {
                 http_response_code(408);
                 return false;

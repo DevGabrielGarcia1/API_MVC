@@ -9,7 +9,7 @@ class Chamadas
     {
         $this->arrChamadas = [
             "usuario/autenticar" => new Acao("service\UsuariosService", "autenticar", [Acao::POST], false),
-            "professores/soma" => new Acao("service\ProfessorService", "professor",[Acao::GET,Acao::POST]),
+            "cadastrar/usuario" => new Acao("service\UsuariosService", "cadastrarUsuario",[Acao::POST]),
             "professores/inserir" => new Acao("service\ProfessorService", "inserir",[Acao::POST]),
             "usuarios/autenticar" => new Acao("service\UsuariosService", "autenticar",[Acao::POST],false),
             "alunos/autenticar" => new Acao("service\AlunosService", "autenticar",[Acao::POST],false),
