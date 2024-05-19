@@ -1,0 +1,39 @@
+//Cadastrar Usuario
+{
+    "username": "",
+    "senha": "",
+    "nomeCompleto": ""
+}
+
+//Cadastrar cliente
+{
+    "nome": "", 
+    "CPF": "", 
+    "data_nascimento": "", 
+    "telefone": "", 
+    "email": ""
+}
+
+//Cadastrar Imovel
+{
+    "tipo_imovel": "", 
+    "endereco": "", 
+    "cidade": "", 
+    "estado": "", 
+    "CEP": "",
+    "valor_aluguel": "", 
+    "area": "", 
+    "quartos": "", 
+    "banheiros": "", 
+    "vagas_garagem": "", 
+    "descricao": ""
+}
+
+//Cadastrar Contrato
+{
+    "id_imovel": "", 
+    "id_cliente": "", 
+    "data_inicio": "", 
+    "data_fim": "", 
+    "forma_pagamento": ""
+}
