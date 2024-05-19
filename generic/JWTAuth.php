@@ -15,7 +15,7 @@ class JWTAuth
         $hora = time(); //Em segundos
         $payload = [
             'iat' => $hora,
-            'exp' => $hora + 300,
+            'exp' => $hora + 180000,
             'uid' => $dados
         ];
 

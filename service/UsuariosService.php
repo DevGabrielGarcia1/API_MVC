@@ -8,53 +8,207 @@ use generic\JWTAuth;
 use generic\MsgRetorno;
 use stdClass;
 
-class UsuariosService extends UsuarioDAO{
+class UsuariosService extends UsuarioDAO
+{
 
-    public function autenticar($user, $senha){
-        
+    public function autenticar($username, $senha)
+    {
         //Validar usuario
-        $rows = parent::verificaLogin($user, $senha);
+        $rows = parent::verificaLogin($username, $senha);
 
         //Criar token
-        if($rows){
+        if ($rows) {
             $jwt = new JWTAuth();
-            $objeto=new stdClass();
-            $objeto->username=$rows[0]["username"];
-            $objeto->id=$rows[0]["id"];
+            $objeto = new stdClass();
+            $objeto->username = $rows[0]["username"];
+            $objeto->id = $rows[0]["id"];
 
             return $jwt->criarChave(json_encode($objeto));
         }
 
+        $retorno = new MsgRetorno;
+        $retorno->result = MsgRetorno::ERROR;
+        $retorno->code = MsgRetorno::CODE_ERROR_USER_OR_PASS;
+        $retorno->message = "Usuario ou senha estão incorretos.";
         http_response_code(401);
+        return $retorno;
     }
 
-    public function cadastrarUsuario($username, $senha, $nomeCompleto){
-
+    public function cadastrarUsuario($username, $senha)
+    {
+        //Recupera o id e username
         $jwt = new JWTAuth();
         $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
-        
-        if(!parent::verificaPermissao($jwtSession['id'])){
-            //..
-        }
 
-        if($username == "" && $senha == ""){
-            //..
-        }
-
-        $result = parent::cadastrarUsuario($username, $senha, $nomeCompleto);
-        if($result !== true){
+        //Verifica a permissão
+        if (!parent::verificaPermissao($jwtSession['id'])) {
             $retorno = new MsgRetorno;
             $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = 23000;
+            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+            $retorno->message = "Acesso restrito";
+            http_response_code(401);
+            return $retorno;
+        }
+
+        //Verifica campos
+        if ($username == "" || $senha == "") {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
+            $retorno->message = "Campos obrigatórios não preenchidos.";
+            http_response_code(406);
+            return $retorno;
+        }
+
+        //Cadastra usuario e reporta a situação
+        $result = parent::cadastrarUsuario($username, $senha);
+        if ($result !== true) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
             $retorno->message = $result;
+            http_response_code(406);
             return $retorno;
         }
 
         $retorno = new MsgRetorno();
         $retorno->result = MsgRetorno::SUCCESS;
-        $retorno->code = 1;
+        $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
         $retorno->message = "Cadastrado";
         return $retorno;
     }
+
+    public function cadastrarCliente($nome, $CPF, $data_nascimento, $telefone, $email)
+    {
+        //Recupera o id e username
+        $jwt = new JWTAuth();
+        $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
+
+        //Verifica a permissão
+        if (!parent::verificaPermissao($jwtSession['id'])) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+            $retorno->message = "Acesso restrito";
+            http_response_code(401);
+            return $retorno;
+        }
+
+        //Verifica campos
+        if ($nome == "" || $CPF == "" || $data_nascimento == "" || $telefone == "" || $email == "") {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
+            $retorno->message = "Campos obrigatórios não preenchidos.";
+            http_response_code(406);
+            return $retorno;
+        }
+
+        //Cadastra usuario e reporta a situação
+        $result = parent::cadastrarCliente($nome, $CPF, $data_nascimento, $telefone, $email);
+        if ($result !== true) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
+            $retorno->message = $result;
+            http_response_code(406);
+            return $retorno;
+        }
+
+        $retorno = new MsgRetorno();
+        $retorno->result = MsgRetorno::SUCCESS;
+        $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
+        $retorno->message = "Cadastrado";
+        return $retorno;
+    }
+
+    public function cadastrarImovel($tipo_imovel, $endereco, $cidade, $estado, $CEP, $valor_aluguel, $area, $quartos, $banheiros, $vagas_garagem, $descricao)
+    {
+        //Recupera o id e username
+        $jwt = new JWTAuth();
+        $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
+
+        //Verifica a permissão
+        if (!parent::verificaPermissao($jwtSession['id'])) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+            $retorno->message = "Acesso restrito";
+            http_response_code(401);
+            return $retorno;
+        }
+
+        //Verifica campos
+        if ($tipo_imovel == "" || $endereco == "" || $cidade == "" || $estado == "" || $CEP == "" || $valor_aluguel == "" || $area == "" || $quartos == "" || $banheiros == "" || $vagas_garagem == "") {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
+            $retorno->message = "Campos obrigatórios não preenchidos.";
+            http_response_code(406);
+            return $retorno;
+        }
+
+        //Cadastra usuario e reporta a situação
+        $result = parent::cadastrarImovel($tipo_imovel, $endereco, $cidade, $estado, $CEP, $valor_aluguel, $area, $quartos, $banheiros, $vagas_garagem, $descricao);
+        if ($result !== true) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
+            $retorno->message = $result;
+            http_response_code(406);
+            return $retorno;
+        }
+
+        $retorno = new MsgRetorno();
+        $retorno->result = MsgRetorno::SUCCESS;
+        $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
+        $retorno->message = "Cadastrado";
+        return $retorno;
+    }
+
+    public function cadastrarContrato($id_imovel, $id_cliente, $data_inicio, $data_fim, $forma_pagamento)
+    {
+        //Recupera o id e username
+        $jwt = new JWTAuth();
+        $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
+
+        //Verifica a permissão
+        if (!parent::verificaPermissao($jwtSession['id'])) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+            $retorno->message = "Acesso restrito";
+            http_response_code(401);
+            return $retorno;
+        }
+
+        //Verifica campos
+        if ($id_imovel == "" || $id_cliente == "" || $data_inicio == "" || $data_fim == "" || $forma_pagamento == "") {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
+            $retorno->message = "Campos obrigatórios não preenchidos.";
+            http_response_code(406);
+            return $retorno;
+        }
+
+        //Cadastra usuario e reporta a situação
+        $result = parent::cadastrarContrato($id_imovel, $id_cliente, $data_inicio, $data_fim, $forma_pagamento);
+        if ($result !== true) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
+            $retorno->message = $result;
+            http_response_code(406);
+            return $retorno;
+        }
+
+        $retorno = new MsgRetorno();
+        $retorno->result = MsgRetorno::SUCCESS;
+        $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
+        $retorno->message = "Cadastrado";
+        return $retorno;
+    }
+
 
 }

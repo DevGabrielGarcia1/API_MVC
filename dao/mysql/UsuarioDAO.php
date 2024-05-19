@@ -3,6 +3,7 @@
 namespace dao\mysql;
 
 use dao\interface\IUsuarioDAO;
+use DateTime;
 use Exception;
 use generic\MysqlFactory;
 
@@ -23,11 +24,11 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioDAO
         return ($retorno[0]['valid'] == 1) ? true : false;
     }
 
-    public function cadastrarUsuario($username, $senha, $nomeCompleto)
+    public function cadastrarUsuario($username, $senha)
     {
-        $sql = "INSERT INTO usuarios(username, senha, nomeCompleto) VALUES (:user, :senha, :nomeCompleto)";
+        $sql = "INSERT INTO usuarios(username, senha, nomeCompleto) VALUES (:user, :senha)";
         try {
-            $retorno = $this->banco->executar($sql, ["user" => $username, "senha" => $senha, "nomeCompleto" => $nomeCompleto]);
+            $retorno = $this->banco->executar($sql, ["user" => $username, "senha" => $senha]);
         } catch (Exception $e) {
             if ($e->getCode() == 23000) {
                 return "Erro: Usuario já existe.";
@@ -39,6 +40,8 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioDAO
 
     public function cadastrarCliente($nome, $CPF, $data_nascimento, $telefone, $email)
     {
+        $dtNasc = DateTime::createFromFormat('d/m/Y', $data_nascimento);
+
         $sql = "INSERT INTO clientes(nome, CPF, data_nascimento, telefone, email) VALUES (:nome, :cpf, :dtNasc, :tel, :email)";
         try {
             $retorno = $this->banco->executar(
@@ -46,7 +49,7 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioDAO
                 [
                     "nome" => $nome,
                     "cpf" => $CPF,
-                    "dtNasc" => $data_nascimento,
+                    "dtNasc" => $dtNasc->format('Y-m-d'),
                     "tel" => $telefone,
                     "email" => $email
                 ]
@@ -89,8 +92,11 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioDAO
         return true;
     }
 
-    public function cadastarContrato($id_imovel, $id_cliente, $data_inicio, $data_fim, $forma_pagamento)
+    public function cadastrarContrato($id_imovel, $id_cliente, $data_inicio, $data_fim, $forma_pagamento)
     {
+        $dtInicio = DateTime::createFromFormat('d/m/Y', $data_inicio);
+        $dtFim = DateTime::createFromFormat('d/m/Y', $data_fim);
+
         $sql = "INSERT INTO contratos(id_imovel, id_cliente, data_inicio, data_fim, forma_pagamento) VALUES (:id_imovel, :id_cliente, :dt_inicio, :dt_fim, :pagamento)";
         try {
             $retorno = $this->banco->executar(
@@ -98,8 +104,8 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioDAO
                 [
                     "id_imovel" => $id_imovel,
                     "id_cliente" => $id_cliente,
-                    "dt_inicio" => $data_inicio,
-                    "dt_fim" => $data_fim,
+                    "dt_inicio" => $dtInicio->format('Y-m-d'),
+                    "dt_fim" => $dtFim->format('Y-m-d'),
                     "pagamento" => $forma_pagamento
                 ]
             );

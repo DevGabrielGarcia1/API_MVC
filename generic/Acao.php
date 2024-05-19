@@ -62,7 +62,7 @@ class Acao
         } catch (Exception $e) {
             http_response_code(500);
             $r = new Retorno();
-            $r->retorno = "Error";
+            $r->retorno = "Error ".$e->getMessage();
             echo json_encode($r);
             return "error";
         }
@@ -104,6 +104,16 @@ class Acao
 
                 if (!isset($parametros[$name])) {
                     http_response_code(406);
+
+                    $retorno = new MsgRetorno;
+                    $retorno->result = MsgRetorno::ERROR;
+                    $retorno->code = MsgRetorno::CODE_ERROR_PARAMETROS_INCORRETOS;
+                    $retorno->message = "Um ou mais parametros estao incorretos.";
+
+                    $r = new Retorno();
+                    $r->retorno = $retorno;
+                    echo json_encode($r);
+
                     return false;
                 }
                 $param[$name] = $parametros[$name];
