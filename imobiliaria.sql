@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 19/05/2024 às 08:03
+-- Tempo de geração: 19/05/2024 às 12:45
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -38,6 +38,13 @@ CREATE TABLE `clientes` (
   `email` varchar(80) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `clientes`
+--
+
+INSERT INTO `clientes` (`id`, `nome`, `CPF`, `data_nascimento`, `telefone`, `email`) VALUES
+(1, 'Teste', '00000000000', '0000-00-00', '349000000000', 'teste@gmail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -52,6 +59,13 @@ CREATE TABLE `contratos` (
   `data_fim` date NOT NULL,
   `forma_pagamento` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `contratos`
+--
+
+INSERT INTO `contratos` (`id`, `id_imovel`, `id_cliente`, `data_inicio`, `data_fim`, `forma_pagamento`) VALUES
+(1, 1, 1, '2024-05-19', '2025-05-19', 'Débito em conta');
 
 -- --------------------------------------------------------
 
@@ -73,6 +87,13 @@ CREATE TABLE `imoveis` (
   `vagas_garagem` int(2) DEFAULT NULL,
   `descricao` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `imoveis`
+--
+
+INSERT INTO `imoveis` (`id`, `tipo_imovel`, `endereco`, `cidade`, `estado`, `CEP`, `valor_aluguel`, `area`, `quartos`, `banheiros`, `vagas_garagem`, `descricao`) VALUES
+(1, 'Casa', 'rua A', 'Uberaba', 'MG', '000000', 1200.00, 20.00, 2, 2, 2, 'Teste');
 
 -- --------------------------------------------------------
 
@@ -131,10 +152,28 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT de tabela `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de tabela `contratos`
+--
+ALTER TABLE `contratos`
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `imoveis`
+--
+ALTER TABLE `imoveis`
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- Restrições para tabelas despejadas
@@ -145,7 +184,7 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `contratos`
   ADD CONSTRAINT `contratos_ibfk_1` FOREIGN KEY (`id_imovel`) REFERENCES `imoveis` (`id`),
-  ADD CONSTRAINT `contratos_ibfk_2` FOREIGN KEY (`id_cliente`) REFERENCES `usuarios` (`id`);
+  ADD CONSTRAINT `contratos_ibfk_2` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
