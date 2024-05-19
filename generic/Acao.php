@@ -36,7 +36,7 @@ class Acao
                 http_response_code(405);
                 return;
             }
-
+            
             if($this->autenticar){
                 $jwt= new JWTAuth();
                 $decode=$jwt->verificar();
@@ -61,6 +61,9 @@ class Acao
             }
         } catch (Exception $e) {
             http_response_code(500);
+            $r = new Retorno();
+            $r->retorno = "Error";
+            echo json_encode($r);
             return "error";
         }
     }
@@ -73,6 +76,7 @@ class Acao
         
         return  $reflect->invokeArgs($obj, $param);
     }
+
     private function verificarMetodo()
     {
         return in_array($_SERVER['REQUEST_METHOD'], $this->action);
@@ -88,6 +92,7 @@ class Acao
 
         return null;
     }
+
     private function verificaParametros(ReflectionMethod $reflectM, $parametros)
     {
 

@@ -9,7 +9,7 @@ class MysqlSingleton
     private static $instance = null;
 
     private $conexaoPDO = null;
-    private $dsn = "mysql:host=localhost;dbname=escola";
+    private $dsn = "mysql:host=localhost;dbname=imobiliaria";
     private $username = "root";
     private $password = "";
 

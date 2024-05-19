@@ -8,7 +8,7 @@ class Chamadas
     public function __construct()
     {
         $this->arrChamadas = [
-            "professores/lista" => new Acao("service\ProfessorService", "listar"),
+            "usuario/autenticar" => new Acao("service\UsuariosService", "autenticar", [Acao::POST], false),
             "professores/soma" => new Acao("service\ProfessorService", "professor",[Acao::GET,Acao::POST]),
             "professores/inserir" => new Acao("service\ProfessorService", "inserir",[Acao::POST]),
             "usuarios/autenticar" => new Acao("service\UsuariosService", "autenticar",[Acao::POST],false),
