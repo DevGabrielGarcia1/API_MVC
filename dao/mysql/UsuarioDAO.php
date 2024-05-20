@@ -64,4 +64,15 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioDAO
         }
         return true;
     }
+
+    public function listarUsuarios()
+    {
+        $sql = "SELECT id, username, permissao FROM usuarios";
+        try {
+            $retorno = $this->banco->executar($sql);
+        } catch (Exception $e) {
+            return "Erro ao remover do banco.";
+        }
+        return $retorno;
+    }
 }

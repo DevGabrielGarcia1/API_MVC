@@ -45,8 +45,8 @@ class UsuarioService extends UsuarioDAO
         $jwt = new JWTAuth();
         $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
 
-        //Verifica a permissão
-        if (!parent::verificaPermissao($jwtSession['id'])) {
+        //Verifica a permissão e ADMIN
+        if (!parent::verificaPermissao($jwtSession['id']) || !parent::isAdmin($jwtSession['id'])) {
             $retorno = new MsgRetorno;
             $retorno->result = MsgRetorno::ERROR;
             $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
@@ -64,16 +64,6 @@ class UsuarioService extends UsuarioDAO
             http_response_code(406);
             return $retorno;
         }
-
-        //Validar ADMIN
-        if(!parent::isAdmin($jwtSession['id'])){
-            $retorno = new MsgRetorno;
-             $retorno->result = MsgRetorno::ERROR;
-             $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
-             $retorno->message = "Acesso restrito";
-             http_response_code(401);
-             return $retorno;
-         }
 
         //Cadastra usuario e reporta a situação
         $result = parent::cadastrarUsuario($username, $senha);
@@ -111,7 +101,7 @@ class UsuarioService extends UsuarioDAO
         }
 
         //Verifica campos
-        if ( $senha_atual == "" || $senha_nova == "") {
+        if ($senha_atual == "" || $senha_nova == "") {
             $retorno = new MsgRetorno;
             $retorno->result = MsgRetorno::ERROR;
             $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
@@ -151,56 +141,76 @@ class UsuarioService extends UsuarioDAO
 
     public function removerUsuario($id)
     {
-         //Recupera o id e username
-         $jwt = new JWTAuth();
-         $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
- 
-         //Verifica a permissão
-         $usuario = new UsuarioService();
-         if (!$usuario->verificaPermissao($jwtSession['id'])) {
-             $retorno = new MsgRetorno;
-             $retorno->result = MsgRetorno::ERROR;
-             $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
-             $retorno->message = "Acesso restrito";
-             http_response_code(401);
-             return $retorno;
-         }
- 
-         //Verifica campos
-         if ( $id == "") {
-             $retorno = new MsgRetorno;
-             $retorno->result = MsgRetorno::ERROR;
-             $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
-             $retorno->message = "Campos obrigatórios não preenchidos.";
-             http_response_code(406);
-             return $retorno;
-         }
- 
-         //Validar ADMIN
-         if(!parent::isAdmin($jwtSession['id'])){
-            $retorno = new MsgRetorno;
-             $retorno->result = MsgRetorno::ERROR;
-             $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
-             $retorno->message = "Acesso restrito";
-             http_response_code(401);
-             return $retorno;
-         }
+        //Recupera o id e username
+        $jwt = new JWTAuth();
+        $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
 
-         //Remover e reporta a situação
-         $result = parent::removerUsuario($id);
-         if ($result !== true) {
-             $retorno = new MsgRetorno;
-             $retorno->result = MsgRetorno::ERROR;
-             $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
-             $retorno->message = $result;
-             http_response_code(406);
-             return $retorno;
-         }
- 
-         $retorno = new MsgRetorno();
-         $retorno->result = MsgRetorno::SUCCESS;
-         $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
-         $retorno->message = "Removido";
-         return $retorno;
+        //Verifica a permissão e ADMIN
+        $usuario = new UsuarioService();
+        if (!$usuario->verificaPermissao($jwtSession['id']) || !parent::isAdmin($jwtSession['id'])) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+            $retorno->message = "Acesso restrito";
+            http_response_code(401);
+            return $retorno;
+        }
+
+        //Verifica campos
+        if ($id == "") {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
+            $retorno->message = "Campos obrigatórios não preenchidos.";
+            http_response_code(406);
+            return $retorno;
+        }
+
+        //Remover e reporta a situação
+        $result = parent::removerUsuario($id);
+        if ($result !== true) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
+            $retorno->message = $result;
+            http_response_code(406);
+            return $retorno;
+        }
+
+        $retorno = new MsgRetorno();
+        $retorno->result = MsgRetorno::SUCCESS;
+        $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
+        $retorno->message = "Removido";
+        return $retorno;
+    }
+
+    public function listarUsuarios()
+    {
+        //Recupera o id e username
+        $jwt = new JWTAuth();
+        $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
+
+        //Verifica a permissão e ADMIN
+        if (!parent::verificaPermissao($jwtSession['id']) || !parent::isAdmin($jwtSession['id'])) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+            $retorno->message = "Acesso restrito";
+            http_response_code(401);
+            return $retorno;
+        }
+        
+        //Listar
+        $result = parent::listarUsuarios();
+        if (is_string($result)) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
+            $retorno->message = $result;
+            http_response_code(406);
+            return $retorno;
+        }
+
+        return $result;
     }
 }
