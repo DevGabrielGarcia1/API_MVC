@@ -36,6 +36,33 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO
         return true;
     }
 
+    public function editarCliente($id, $nome, $CPF, $data_nascimento, $telefone, $email)
+    {
+        $dtNasc = DateTime::createFromFormat('d/m/Y', $data_nascimento);
+        
+        $sql = "UPDATE clientes set nome=IF(:nome='',nome,:nome), 
+                                    CPF=IF(:cpf='',CPF,:cpf), 
+                                    data_nascimento=IF(:dtNasc='',data_nascimento,:dtNasc), 
+                                    telefone=IF(:tel='',telefone,:tel), 
+                                    email=IF(:email='',email,:email)
+                                    WHERE id = :id";
+        try {
+            $retorno = $this->banco->executar(
+                $sql,
+                [
+                    "id" => $id,
+                    "nome" => $nome,
+                    "cpf" => $CPF,
+                    "dtNasc" => ($dtNasc!=false)?$dtNasc->format('Y-m-d'):'',
+                    "tel" => $telefone,
+                    "email" => $email
+                ]
+            );
+        } catch (Exception $e) {
+            return "Erro ao inserir no banco.";
+        }
+        return true;
+    }
 
     public function clienteExists($id)
     {

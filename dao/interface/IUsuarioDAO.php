@@ -6,6 +6,7 @@ interface IUsuarioDAO{
     public function verificaLogin($usuario,$senha);
     public function verificaPermissao($id);
     public function isAdmin($id);
+    public function listarUsuarios();
     
     //Cadastrar
     public function cadastrarUsuario($username, $senha);

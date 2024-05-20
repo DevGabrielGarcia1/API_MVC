@@ -23,6 +23,15 @@
     "telefone": "", 
     "email": ""
 }
+//Editar cliente
+{
+    "id": "", 
+    "nome": "", 
+    "CPF": "", 
+    "data_nascimento": "", 
+    "telefone": "", 
+    "email": ""
+}
 
 //Cadastrar Imovel
 {
