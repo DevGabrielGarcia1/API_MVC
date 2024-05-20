@@ -62,7 +62,7 @@ class Acao
         } catch (Exception $e) {
             http_response_code(500);
             $r = new Retorno();
-            $r->retorno = "Error ".$e->getMessage();
+            $r->retorno = "Error";
             echo json_encode($r);
             return "error";
         }

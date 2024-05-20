@@ -8,19 +8,23 @@ class Chamadas
     public function __construct()
     {
         $this->arrChamadas = [
-            "usuario/autenticar" => new Acao("service\UsuariosService", "autenticar", [Acao::POST], false),
-            "cadastrar/usuario" => new Acao("service\UsuariosService", "cadastrarUsuario",[Acao::POST]),
-            "cadastrar/cliente" => new Acao("service\UsuariosService", "cadastrarCliente",[Acao::POST]),
-            "cadastrar/imovel" => new Acao("service\UsuariosService", "cadastrarImovel",[Acao::POST]),
-            "cadastrar/contrato" => new Acao("service\UsuariosService", "cadastrarContrato",[Acao::POST]),
-            "editar/usuario" => new Acao("service\UsuariosService", "",[Acao::POST]),
-            "editar/cliente" => new Acao("service\UsuariosService", "",[Acao::POST]),
-            "editar/imovel" => new Acao("service\UsuariosService", "",[Acao::POST]),
-            "contrato/cancelar" => new Acao("service\UsuariosService", "",[Acao::POST]),
-            "remover/usuario" => new Acao("service\UsuariosService", "",[Acao::DELETE]),
-            "remover/cliente" => new Acao("service\UsuariosService", "",[Acao::DELETE]),
-            "remover/imovel" => new Acao("service\UsuariosService", "",[Acao::DELETE]),
-            "imoveis/listar" => new Acao("service\UsuariosService", "",[Acao::GET, Acao::POST], false),
+            "usuario/autenticar" => new Acao("service\UsuarioService", "autenticar", [Acao::POST], false),
+            
+            "cadastrar/usuario" => new Acao("service\UsuarioService", "cadastrarUsuario",[Acao::POST]),
+            "cadastrar/cliente" => new Acao("service\ClienteService", "cadastrarCliente",[Acao::POST]),
+            "cadastrar/imovel" => new Acao("service\ImovelService", "cadastrarImovel",[Acao::POST]),
+            "cadastrar/contrato" => new Acao("service\ContratoService", "cadastrarContrato",[Acao::POST]),
+
+            "editar/usuario" => new Acao("service\UsuarioService", "",[Acao::POST]),
+            "editar/cliente" => new Acao("service\ClienteService", "",[Acao::POST]),
+            "editar/imovel" => new Acao("service\ImovelService", "",[Acao::POST]),
+
+            "contrato/cancelar" => new Acao("service\ContratoService", "",[Acao::POST]),
+            "remover/usuario" => new Acao("service\UsuarioService", "",[Acao::DELETE]),
+            "remover/cliente" => new Acao("service\ClienteService", "",[Acao::DELETE]),
+            "remover/imovel" => new Acao("service\ImovelService", "",[Acao::DELETE]),
+
+            "imoveis/listar" => new Acao("service\...Service", "",[Acao::GET, Acao::POST], false),
         ];
     }
 
