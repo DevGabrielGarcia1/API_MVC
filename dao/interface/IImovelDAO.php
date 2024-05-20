@@ -11,4 +11,6 @@ interface IImovelDAO {
 
     //Excluir
 
+
+    public function imovelExists($id);
 }

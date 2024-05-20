@@ -11,4 +11,6 @@ interface IClienteDAO {
 
     //Excluir
 
+
+    public function clienteExists($id);
 }

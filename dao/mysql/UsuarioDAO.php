@@ -24,9 +24,16 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioDAO
         return ($retorno[0]['valid'] == 1) ? true : false;
     }
 
+    public function isAdmin($id)
+    {
+        $sql = "SELECT permissao FROM usuarios WHERE id = :id";
+        $retorno = $this->banco->executar($sql, ["id" => $id]);
+        return ($retorno[0]['permissao'] == 0) ? true : false;
+    }
+
     public function cadastrarUsuario($username, $senha)
     {
-        $sql = "INSERT INTO usuarios(username, senha, nomeCompleto) VALUES (:user, :senha)";
+        $sql = "INSERT INTO usuarios(username, senha) VALUES (:user, :senha)";
         try {
             $retorno = $this->banco->executar($sql, ["user" => $username, "senha" => $senha]);
         } catch (Exception $e) {
@@ -38,4 +45,23 @@ class UsuarioDAO extends MysqlFactory implements IUsuarioDAO
         return true;
     }
 
+    public function editarUsuario($id, $senha_atual, $senha_nova){
+        $sql = "UPDATE usuarios SET senha = :senha WHERE id = :id";
+        try {
+            $retorno = $this->banco->executar($sql, ["id" => $id, "senha" => $senha_nova]);
+        } catch (Exception $e) {
+            return "Erro ao atualizar o banco.";
+        }
+        return true;
+    }
+
+    public function removerUsuario($id){
+        $sql = "DELETE FROM usuarios WHERE id = :id";
+        try {
+            $retorno = $this->banco->executar($sql, ["id" => $id]);
+        } catch (Exception $e) {
+            return "Erro ao remover do banco.";
+        }
+        return true;
+    }
 }

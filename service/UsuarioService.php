@@ -34,7 +34,8 @@ class UsuarioService extends UsuarioDAO
         return $retorno;
     }
 
-    public function verificaPermissao($id){
+    public function verificaPermissao($id)
+    {
         return parent::verificaPermissao($id);
     }
 
@@ -64,6 +65,16 @@ class UsuarioService extends UsuarioDAO
             return $retorno;
         }
 
+        //Validar ADMIN
+        if(!parent::isAdmin($jwtSession['id'])){
+            $retorno = new MsgRetorno;
+             $retorno->result = MsgRetorno::ERROR;
+             $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+             $retorno->message = "Acesso restrito";
+             http_response_code(401);
+             return $retorno;
+         }
+
         //Cadastra usuario e reporta a situação
         $result = parent::cadastrarUsuario($username, $senha);
         if ($result !== true) {
@@ -82,4 +93,114 @@ class UsuarioService extends UsuarioDAO
         return $retorno;
     }
 
+    public function editarUsuarioAtual($senha_atual, $senha_nova)
+    {
+        //Recupera o id e username
+        $jwt = new JWTAuth();
+        $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
+
+        //Verifica a permissão
+        $usuario = new UsuarioService();
+        if (!$usuario->verificaPermissao($jwtSession['id'])) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+            $retorno->message = "Acesso restrito";
+            http_response_code(401);
+            return $retorno;
+        }
+
+        //Verifica campos
+        if ( $senha_atual == "" || $senha_nova == "") {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
+            $retorno->message = "Campos obrigatórios não preenchidos.";
+            http_response_code(406);
+            return $retorno;
+        }
+
+        //Validar usuario
+        $rows = parent::verificaLogin($jwtSession['username'], $senha_atual);
+        if (!($rows)) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_USER_OR_PASS;
+            $retorno->message = "Senha atual incorreta";
+            http_response_code(401);
+            return $retorno;
+        }
+
+        //Editar e reporta a situação
+        $result = parent::editarUsuario($jwtSession['id'], $senha_atual, $senha_nova);
+        if ($result !== true) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
+            $retorno->message = $result;
+            http_response_code(406);
+            return $retorno;
+        }
+
+        $retorno = new MsgRetorno();
+        $retorno->result = MsgRetorno::SUCCESS;
+        $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
+        $retorno->message = "Editado";
+        return $retorno;
+    }
+
+    public function removerUsuario($id)
+    {
+         //Recupera o id e username
+         $jwt = new JWTAuth();
+         $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
+ 
+         //Verifica a permissão
+         $usuario = new UsuarioService();
+         if (!$usuario->verificaPermissao($jwtSession['id'])) {
+             $retorno = new MsgRetorno;
+             $retorno->result = MsgRetorno::ERROR;
+             $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+             $retorno->message = "Acesso restrito";
+             http_response_code(401);
+             return $retorno;
+         }
+ 
+         //Verifica campos
+         if ( $id == "") {
+             $retorno = new MsgRetorno;
+             $retorno->result = MsgRetorno::ERROR;
+             $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
+             $retorno->message = "Campos obrigatórios não preenchidos.";
+             http_response_code(406);
+             return $retorno;
+         }
+ 
+         //Validar ADMIN
+         if(!parent::isAdmin($jwtSession['id'])){
+            $retorno = new MsgRetorno;
+             $retorno->result = MsgRetorno::ERROR;
+             $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+             $retorno->message = "Acesso restrito";
+             http_response_code(401);
+             return $retorno;
+         }
+
+         //Remover e reporta a situação
+         $result = parent::removerUsuario($id);
+         if ($result !== true) {
+             $retorno = new MsgRetorno;
+             $retorno->result = MsgRetorno::ERROR;
+             $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
+             $retorno->message = $result;
+             http_response_code(406);
+             return $retorno;
+         }
+ 
+         $retorno = new MsgRetorno();
+         $retorno->result = MsgRetorno::SUCCESS;
+         $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
+         $retorno->message = "Removido";
+         return $retorno;
+    }
 }

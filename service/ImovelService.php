@@ -53,4 +53,9 @@ class ImovelService extends ImovelDAO {
         return $retorno;
     }
 
+
+    public function imovelExists($id)
+    {
+        return parent::imovelExists($id);
+    }
 }

@@ -53,4 +53,9 @@ class ClienteService extends ClienteDAO {
         return $retorno;
     }
 
+    
+    public function clienteExists($id)
+    {
+        return parent::clienteExists($id);
+    }
 }

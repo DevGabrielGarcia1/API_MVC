@@ -6,8 +6,10 @@ use dao\interface\IClienteDAO;
 use DateTime;
 use Exception;
 use generic\MysqlFactory;
+use generic\Retorno;
 
-class ClienteDAO extends MysqlFactory implements IClienteDAO {
+class ClienteDAO extends MysqlFactory implements IClienteDAO
+{
 
     public function cadastrarCliente($nome, $CPF, $data_nascimento, $telefone, $email)
     {
@@ -34,4 +36,15 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO {
         return true;
     }
 
+
+    public function clienteExists($id)
+    {
+        $sql = "SELECT count(id) as result FROM clientes WHERE id = :id";
+        try {
+            $retorno = $this->banco->executar($sql, ["id" => $id]);
+        } catch (Exception $e) {
+            return "Erro ao inserir no banco.";
+        }
+        return ($retorno[0]['result'] == 0) ? false : true;
+    }
 }

@@ -1,9 +1,19 @@
-//Cadastrar Usuario
+//Cadastrar Usuário
 {
     "username": "",
-    "senha": "",
-    "nomeCompleto": ""
+    "senha": ""
 }
+//Editar Usuário
+{
+    "senha_atual": "",
+    "senha_nova": ""
+}
+//Remover Usuário
+{
+    "id": ""
+}
+
+
 
 //Cadastrar cliente
 {
@@ -33,7 +43,17 @@
 {
     "id_imovel": "", 
     "id_cliente": "", 
-    "data_inicio": "", 
-    "data_fim": "", 
+    "data_inicio": "",
     "forma_pagamento": ""
 }
+//Editar Contrato
+{
+    "id": "",
+    "forma_pagamento": ""
+}
+//Finalizar Contrato
+{
+    "id": "",
+    "data_fim": ""
+}
+

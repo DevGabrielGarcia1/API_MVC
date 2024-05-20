@@ -37,4 +37,15 @@ class ImovelDAO extends MysqlFactory implements IImovelDAO {
         return true;
     }
 
+
+    public function imovelExists($id)
+    {
+        $sql = "SELECT count(id) as result FROM imoveis WHERE id = :id";
+        try {
+            $retorno = $this->banco->executar($sql, ["id" => $id]);
+        } catch (Exception $e) {
+            return "Erro ao inserir no banco.";
+        }
+        return ($retorno[0]['result'] == 0) ? false : true;
+    }
 }
