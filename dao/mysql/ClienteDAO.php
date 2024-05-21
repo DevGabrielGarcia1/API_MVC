@@ -74,4 +74,15 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO
         }
         return ($retorno[0]['result'] == 0) ? false : true;
     }
+
+    public function listarClienteAll(){
+
+        $sql = "SELECT id, nome, CPF, data_nascimento, telefone, email,   if(contrato) as contrato_ativo FROM clientes ";
+        try {
+            $retorno = $this->banco->executar($sql, ["id" => $id]);
+        } catch (Exception $e) {
+            return "Erro ao inserir no banco.";
+        }
+        return ($retorno[0]['result'] == 0) ? false : true;
+    }
 }
