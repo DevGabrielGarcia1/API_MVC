@@ -47,22 +47,12 @@ class UsuarioService extends UsuarioDAO
 
         //Verifica a permissão e ADMIN
         if (!parent::verificaPermissao($jwtSession['id']) || !parent::isAdmin($jwtSession['id'])) {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
-            $retorno->message = "Acesso restrito";
-            http_response_code(401);
-            return $retorno;
+            return MsgRetorno::defaultMessage_AcessoRestrito();
         }
 
         //Verifica campos
         if ($username == "" || $senha == "") {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
-            $retorno->message = "Campos obrigatórios não preenchidos.";
-            http_response_code(406);
-            return $retorno;
+            return MsgRetorno::defaultMessage_CamposObrigatorios();
         }
 
         //Cadastra usuario e reporta a situação
@@ -76,11 +66,7 @@ class UsuarioService extends UsuarioDAO
             return $retorno;
         }
 
-        $retorno = new MsgRetorno();
-        $retorno->result = MsgRetorno::SUCCESS;
-        $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
-        $retorno->message = "Cadastrado";
-        return $retorno;
+        return MsgRetorno::defaultMessage_Success("Cadastrado");
     }
 
     public function editarUsuarioAtual($senha_atual, $senha_nova)
@@ -92,22 +78,12 @@ class UsuarioService extends UsuarioDAO
         //Verifica a permissão
         $usuario = new UsuarioService();
         if (!$usuario->verificaPermissao($jwtSession['id'])) {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
-            $retorno->message = "Acesso restrito";
-            http_response_code(401);
-            return $retorno;
+            return MsgRetorno::defaultMessage_AcessoRestrito();
         }
 
         //Verifica campos
         if ($senha_atual == "" || $senha_nova == "") {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
-            $retorno->message = "Campos obrigatórios não preenchidos.";
-            http_response_code(406);
-            return $retorno;
+            return MsgRetorno::defaultMessage_CamposObrigatorios();
         }
 
         //Validar usuario
@@ -132,11 +108,7 @@ class UsuarioService extends UsuarioDAO
             return $retorno;
         }
 
-        $retorno = new MsgRetorno();
-        $retorno->result = MsgRetorno::SUCCESS;
-        $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
-        $retorno->message = "Editado";
-        return $retorno;
+        return MsgRetorno::defaultMessage_Success("Editado");
     }
 
     public function removerUsuario($id)
@@ -148,22 +120,12 @@ class UsuarioService extends UsuarioDAO
         //Verifica a permissão e ADMIN
         $usuario = new UsuarioService();
         if (!$usuario->verificaPermissao($jwtSession['id']) || !parent::isAdmin($jwtSession['id'])) {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
-            $retorno->message = "Acesso restrito";
-            http_response_code(401);
-            return $retorno;
+            return MsgRetorno::defaultMessage_AcessoRestrito();
         }
 
         //Verifica campos
         if ($id == "") {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
-            $retorno->message = "Campos obrigatórios não preenchidos.";
-            http_response_code(406);
-            return $retorno;
+            return MsgRetorno::defaultMessage_CamposObrigatorios();
         }
 
         //Remover e reporta a situação
@@ -177,11 +139,7 @@ class UsuarioService extends UsuarioDAO
             return $retorno;
         }
 
-        $retorno = new MsgRetorno();
-        $retorno->result = MsgRetorno::SUCCESS;
-        $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
-        $retorno->message = "Removido";
-        return $retorno;
+        return MsgRetorno::defaultMessage_Success("Removido");
     }
 
     public function listarUsuarios()
@@ -192,12 +150,7 @@ class UsuarioService extends UsuarioDAO
 
         //Verifica a permissão e ADMIN
         if (!parent::verificaPermissao($jwtSession['id']) || !parent::isAdmin($jwtSession['id'])) {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
-            $retorno->message = "Acesso restrito";
-            http_response_code(401);
-            return $retorno;
+            return MsgRetorno::defaultMessage_AcessoRestrito();
         }
         
         //Listar

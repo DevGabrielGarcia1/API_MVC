@@ -175,6 +175,16 @@ class ContratoService extends ContratoDAO{
             return MsgRetorno::defaultMessage_CamposObrigatorios();
         }
 
+        //Valida combinações
+        if($data_fim != "" && $contrato_ativo != "")
+        {
+            $retorno = new MsgRetorno();
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_NOT_ACCEPT;
+            $retorno->message = "Não é possivel filtar por data_fim e contrato_ativo simultaneamente.";
+            return $retorno;
+        }
+
         //Listar os usuarios
         $result = parent::listarContratos($id, $id_imovel, $id_cliente, $data_inicio, $data_fim, $forma_pagamento, $contrato_ativo);
         if (is_string($result)) {
@@ -184,10 +194,6 @@ class ContratoService extends ContratoDAO{
             $retorno->message = $result;
             http_response_code(406);
             return $retorno;
-        }
-        if(isset($result->error)){
-            if($result->error)
-                return $result->pack;
         }
 
         return $result;

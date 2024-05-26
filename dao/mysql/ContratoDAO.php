@@ -60,20 +60,6 @@ class ContratoDAO extends MysqlFactory implements IContratoDAO
     public function listarContratos($id, $id_imovel, $id_cliente, $data_inicio, $data_fim, $forma_pagamento, $contrato_ativo)
     {
         
-        //Valida combinações
-        if($data_fim != "" && $contrato_ativo != "")
-        {
-            $retorno = new MsgRetorno();
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_NOT_ACCEPT;
-            $retorno->message = "Não é possivel filtar por data_fim e contrato_ativo simultaneamente.";
-
-            $return = new stdClass();
-            $return->error = true;
-            $return->pack = $retorno;
-            return $return;
-        }
-
         $dtInicio = DateTime::createFromFormat('d/m/Y', $data_inicio);
         $dtFim = DateTime::createFromFormat('d/m/Y', $data_fim);
 
