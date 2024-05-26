@@ -64,20 +64,53 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO
         return true;
     }
 
-    public function clienteExists($id)
+    public function listarCliente($id = null, $nome = null, $CPF = null, $contrato_ativo = null)
     {
-        $sql = "SELECT count(id) as result FROM clientes WHERE id = :id";
-        try {
-            $retorno = $this->banco->executar($sql, ["id" => $id]);
-        } catch (Exception $e) {
-            return "Erro ao inserir no banco.";
+        
+        $sql = "SELECT c.id, nome, CPF, data_nascimento, telefone, email,  con.data_fim IS NOT NULL as contrato_ativo FROM clientes as c LEFT JOIN contratos as con ON c.id = con.id_cliente WHERE";
+        
+        $where = array();
+        if($id != "" || $id != NULL){
+            $sql .= " c.id = :id AND";
+            $where['id'] = $id;
         }
-        return ($retorno[0]['result'] == 0) ? false : true;
+        if($nome != "" || $nome != NULL){
+            $sql .= " nome = :nome AND";
+            $where['nome'] = $nome;
+        }
+        if($CPF != "" || $CPF != NULL){
+            $sql .= " CPF = :cpf AND";
+            $where['cpf'] = $CPF;
+        }
+        if($contrato_ativo != "" || $contrato_ativo){
+            $sql .= " (con.data_fim IS NOT NULL) = :con AND";
+            $where['con'] = $contrato_ativo;
+        }
+
+        $sql = substr($sql, 0, -4);
+        
+        try {
+            $retorno = $this->banco->executar($sql, $where);
+        } catch (Exception $e) {
+            return "Erro ao buscar no banco. ".$e->getMessage();
+        }
+        return $retorno;
     }
 
     public function listarClienteAll(){
 
-        $sql = "SELECT id, nome, CPF, data_nascimento, telefone, email,   if(contrato) as contrato_ativo FROM clientes ";
+        $sql = "SELECT c.id, nome, CPF, data_nascimento, telefone, email, con.data_fim IS NOT NULL as contrato_ativo FROM clientes as c LEFT JOIN contratos as con ON c.id = con.id_cliente";
+        try {
+            $retorno = $this->banco->executar($sql);
+        } catch (Exception $e) {
+            return "Erro ao buscar no banco.";
+        }
+        return $retorno;
+    }
+
+    public function clienteExists($id)
+    {
+        $sql = "SELECT count(id) as result FROM clientes WHERE id = :id";
         try {
             $retorno = $this->banco->executar($sql, ["id" => $id]);
         } catch (Exception $e) {

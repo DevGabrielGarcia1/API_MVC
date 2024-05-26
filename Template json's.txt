@@ -1,3 +1,9 @@
+//Autenticar
+{
+    "username": "",
+    "senha": ""
+}
+
 //Cadastrar Usuário
 {
     "username": "",
@@ -31,6 +37,13 @@
     "data_nascimento": "", 
     "telefone": "", 
     "email": ""
+}
+//Listar cliente
+{
+    "id": "", 
+    "nome": "", 
+    "CPF": "", 
+    "contrato_ativo": ""
 }
 
 //Cadastrar Imovel

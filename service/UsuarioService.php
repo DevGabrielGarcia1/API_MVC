@@ -34,9 +34,17 @@ class UsuarioService extends UsuarioDAO
         return $retorno;
     }
 
-    public function verificaPermissao($id)
+    public function verificaPermissao($id, $message = "Acesso restrito")
     {
-        return parent::verificaPermissao($id);
+        if (!parent::verificaPermissao($id)) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+            $retorno->message = $message;
+            http_response_code(401);
+            return $retorno;
+        }
+        return true;
     }
 
     public function cadastrarUsuario($username, $senha)

@@ -16,13 +16,9 @@ class ClienteService extends ClienteDAO {
 
         //Verifica a permissão
         $usuario = new UsuarioService();
-        if (!$usuario->verificaPermissao($jwtSession['id'])) {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
-            $retorno->message = "Acesso restrito";
-            http_response_code(401);
-            return $retorno;
+        $usuario = $usuario->verificaPermissao($jwtSession['id']);
+        if (!$usuario) {
+            return $usuario;
         }
 
         //Verifica campos
@@ -61,13 +57,9 @@ class ClienteService extends ClienteDAO {
 
         //Verifica a permissão
         $usuario = new UsuarioService();
-        if (!$usuario->verificaPermissao($jwtSession['id'])) {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
-            $retorno->message = "Acesso restrito";
-            http_response_code(401);
-            return $retorno;
+        $usuario = $usuario->verificaPermissao($jwtSession['id']);
+        if (!$usuario) {
+            return $usuario;
         }
 
         //Verifica campos
@@ -96,6 +88,70 @@ class ClienteService extends ClienteDAO {
         $retorno->code = MsgRetorno::CODE_SUCCESS_OPERATION;
         $retorno->message = "Editado";
         return $retorno;
+    }
+
+    public function listarCliente($id = null, $nome = null, $CPF = null, $contrato_ativo = null)
+    {
+        //Recupera o id e username
+        $jwt = new JWTAuth();
+        $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
+
+        //Verifica a permissão
+        $usuario = new UsuarioService();
+        $usuario = $usuario->verificaPermissao($jwtSession['id']);
+        if (!$usuario) {
+            return $usuario;
+        }
+        
+        //Verifica campos
+        if ($id == "" && $nome == "" && $CPF == "" && $contrato_ativo == "") {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
+            $retorno->message = "Campos obrigatórios não preenchidos.";
+            http_response_code(406);
+            return $retorno;
+        }
+
+        //Listar os usuarios
+        $result = parent::listarCliente($id, $nome, $CPF, $contrato_ativo);
+        if (is_string($result)) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
+            $retorno->message = $result;
+            http_response_code(406);
+            return $retorno;
+        }
+
+        return $result;
+    }
+
+    public function listarClienteAll()
+    {
+        //Recupera o id e username
+        $jwt = new JWTAuth();
+        $jwtSession = json_decode($jwt->verificar()->uid, true, 512, JSON_THROW_ON_ERROR);
+
+        //Verifica a permissão
+        $usuario = new UsuarioService();
+        $usuario = $usuario->verificaPermissao($jwtSession['id']);
+        if (!$usuario) {
+            return $usuario;
+        }
+
+        //Listar todos usuarios
+        $result = parent::listarClienteAll();
+        if (is_string($result)) {
+            $retorno = new MsgRetorno;
+            $retorno->result = MsgRetorno::ERROR;
+            $retorno->code = MsgRetorno::CODE_ERROR_PROBLEMAS_BANCO;
+            $retorno->message = $result;
+            http_response_code(406);
+            return $retorno;
+        }
+
+        return $result;
     }
     
     public function clienteExists($id)
