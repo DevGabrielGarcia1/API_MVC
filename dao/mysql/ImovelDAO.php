@@ -78,13 +78,52 @@ class ImovelDAO extends MysqlFactory implements IImovelDAO {
         return true;
     }
 
+    public function desativarImovel($id)
+    {
+        $sql = "UPDATE imoveis set active=0 WHERE id = :id";
+        try {
+            $retorno = $this->banco->executar($sql, ["id" => $id]);
+        } catch (Exception $e) {
+            if ($e->getCode() == 23000) {
+                return "Erro ao desativar imovel.";
+            }
+            return "Erro ao atuaizar no banco.";
+        }
+        return true;
+    }
+
+    public function ativarImovel($id)
+    {
+        $sql = "UPDATE imoveis set active=1 WHERE id = :id";
+        try {
+            $retorno = $this->banco->executar($sql, ["id" => $id]);
+        } catch (Exception $e) {
+            if ($e->getCode() == 23000) {
+                return "Erro ao ativar imovel.";
+            }
+            return "Erro ao atualizar no banco.";
+        }
+        return true;
+    }
+
     public function imovelExists($id)
     {
         $sql = "SELECT count(id) as result FROM imoveis WHERE id = :id";
         try {
             $retorno = $this->banco->executar($sql, ["id" => $id]);
         } catch (Exception $e) {
-            return "Erro ao inserir no banco.";
+            return "Erro ao buscar no banco.";
+        }
+        return ($retorno[0]['result'] == 0) ? false : true;
+    }
+
+    public function imovelIsActive($id)
+    {
+        $sql = "SELECT active as result FROM imoveis WHERE id = :id";
+        try {
+            $retorno = $this->banco->executar($sql, ["id" => $id]);
+        } catch (Exception $e) {
+            return "Erro ao buscar no banco.";
         }
         return ($retorno[0]['result'] == 0) ? false : true;
     }

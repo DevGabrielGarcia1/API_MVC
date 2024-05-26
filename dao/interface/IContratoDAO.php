@@ -13,7 +13,10 @@ interface IContratoDAO {
     //Finalizar
     public function finalizarContrato($id, $data_fim);
 
-    public function clienteTemContrato($id);
-    public function imovelTemContrato($id);
+    public function listarContratos($id, $id_imovel, $id_cliente, $data_inicio, $data_fim, $forma_pagamento, $contrato_ativo);
+    public function listarContratosAll();
+
+    public function clienteTemContratoAtivo($id);
+    public function imovelTemContratoAtivo($id);
 
 }

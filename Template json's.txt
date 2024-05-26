@@ -111,7 +111,14 @@
     "vagas_garagem": "", 
     "descricao": ""
 }
-
+//Desativar imóvel
+{
+    "id": ""
+}
+//Ativar imóvel
+{
+    "id": ""
+}
 
 
 
@@ -132,5 +139,15 @@
 {
     "id": "",
     "data_fim": ""
+}
+//Listar Contrato
+{
+    "id": "",
+    "id_imovel": "", 
+    "id_cliente": "", 
+    "data_inicio": "",
+    "data_fim": "",
+    "forma_pagamento": "",
+    "contrato_ativo": ""
 }
 

@@ -28,15 +28,17 @@ class Chamadas
 
             "imovel/cadastrar" => new Acao("service\ImovelService", "cadastrarImovel",[Acao::POST]),
             "imovel/editar" => new Acao("service\ImovelService", "editarImovel",[Acao::POST]),
-            "imovel/desativar" => new Acao("service\ImovelService", "",[Acao::POST]),
-            "imovel/ativar" => new Acao("service\ImovelService", "",[Acao::POST]),
+            "imovel/desativar" => new Acao("service\ImovelService", "desativarImovel",[Acao::POST]),
+            "imovel/ativar" => new Acao("service\ImovelService", "ativarImovel",[Acao::POST]),
 
             "contrato/cadastrar" => new Acao("service\ContratoService", "cadastrarContrato",[Acao::POST]),
             "contrato/editar" => new Acao("service\ContratoService", "editarContrato",[Acao::POST]),
             "contrato/finalizar" => new Acao("service\ContratoService", "finalizarContrato",[Acao::POST]),
-            "contrato/listar/all" => new Acao("service\ContratoService", "finalizarContrato",[Acao::GET, Acao::POST]),
+            "contrato/listar" => new Acao("service\ContratoService", "listarContratos",[Acao::POST]),
+            "contrato/listar/ativos" => new Acao("service\ContratoService", "listarContratosAtivos",[Acao::GET, Acao::POST]),
+            "contrato/listar/all" => new Acao("service\ContratoService", "listarContratosAll",[Acao::GET, Acao::POST]),
         
-            "imovel/listar" => new Acao("service\...Service", "",[Acao::GET, Acao::POST], false),
+            "imovel/listar" => new Acao("service\ImovelService", "",[Acao::GET, Acao::POST], false),
         ];
     }
 

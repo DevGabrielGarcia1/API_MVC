@@ -42,7 +42,11 @@ class Acao
                 $decode=$jwt->verificar();
                 if(!$decode){
                     http_response_code(401);
-                    return;
+                    $retorno = new MsgRetorno;
+                    $retorno->result = MsgRetorno::ERROR;
+                    $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
+                    $retorno->message = "Acesso restrito";
+                    return $retorno;
                 }
             }
 
