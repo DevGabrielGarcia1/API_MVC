@@ -74,8 +74,10 @@ class ContratoDAO extends MysqlFactory implements IContratoDAO
             return $return;
         }
 
-        
-        $sql = "SELECT  id, id_imovel, id_cliente, data_inicio, data_fim , forma_pagamento, data_fim IS NULL as contrato_ativo FROM contratos WHERE";
+        $dtInicio = DateTime::createFromFormat('d/m/Y', $data_inicio);
+        $dtFim = DateTime::createFromFormat('d/m/Y', $data_fim);
+
+        $sql = "SELECT  id, id_imovel, id_cliente, DATE_FORMAT(data_inicio,'%d/%m/%Y') as data_inicio, DATE_FORMAT(data_fim,'%d/%m/%Y') as data_fim, forma_pagamento, data_fim IS NULL as contrato_ativo FROM contratos WHERE";
         
         $where = array();
         if($id != ""){
@@ -92,11 +94,20 @@ class ContratoDAO extends MysqlFactory implements IContratoDAO
         }
         if($data_inicio!= ""){
             $sql .= " data_inicio like :dtIni AND";
-            $where['dtIni'] = "%".$data_inicio."%";
+            try {
+                $where['dtFim'] = "%".$dtInicio->format('Y-m-d')."%";
+            } catch (\Throwable $th) {
+                $where['dtFim'] = "%".$data_inicio."%";
+            }
         }
         if($data_fim != ""){
             $sql .= " data_fim like :dtFim AND";
-            $where['dtFim'] = "%".$data_fim."%";
+            try {
+                $where['dtFim'] = "%".$dtFim->format('Y-m-d')."%";
+            } catch (\Throwable $th) {
+                $where['dtFim'] = "%".$data_fim."%";
+            }
+            
         }
         if($forma_pagamento != ""){
             $sql .= " forma_pagamento = :pag AND";
@@ -112,14 +123,14 @@ class ContratoDAO extends MysqlFactory implements IContratoDAO
         try {
             $retorno = $this->banco->executar($sql, $where);
         } catch (Exception $e) {
-            return "Erro ao buscar no banco. ".$e->getMessage();
+            return "Erro ao buscar no banco.";
         }
         return $retorno;
     }
 
     public function listarContratosAll()
     {
-        $sql = "SELECT  id, id_imovel, id_cliente, data_inicio, data_fim, forma_pagamento FROM contratos";
+        $sql = "SELECT  id, id_imovel, id_cliente, DATE_FORMAT(data_inicio,'%d/%m/%Y') as data_inicio, DATE_FORMAT(data_fim,'%d/%m/%Y') as data_fim, forma_pagamento FROM contratos";
         try {
             $retorno = $this->banco->executar($sql);
         } catch (Exception $e) {

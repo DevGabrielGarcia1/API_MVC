@@ -102,12 +102,7 @@ class ClienteService extends ClienteDAO {
         
         //Verifica campos
         if ($id == "" && $nome == "" && $CPF == "" && $contrato_ativo == "") {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
-            $retorno->message = "Campos obrigatórios não preenchidos.";
-            http_response_code(406);
-            return $retorno;
+            return MsgRetorno::defaultMessage_CamposObrigatorios();
         }
 
         //Listar os usuarios
