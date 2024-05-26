@@ -27,7 +27,7 @@ class Chamadas
             "proprietario/listar/all" => new Acao("service\ProprietarioService", "listarProprietarioAll",[Acao::GET, Acao::POST]),
 
             "imovel/cadastrar" => new Acao("service\ImovelService", "cadastrarImovel",[Acao::POST]),
-            "imovel/editar" => new Acao("service\ImovelService", "",[Acao::POST]),
+            "imovel/editar" => new Acao("service\ImovelService", "editarImovel",[Acao::POST]),
             "imovel/desativar" => new Acao("service\ImovelService", "",[Acao::POST]),
             "imovel/ativar" => new Acao("service\ImovelService", "",[Acao::POST]),
 

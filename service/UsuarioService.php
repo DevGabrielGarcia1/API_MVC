@@ -22,7 +22,7 @@ class UsuarioService extends UsuarioDAO
             $objeto = new stdClass();
             $objeto->username = $rows[0]["username"];
             $objeto->id = $rows[0]["id"];
-
+            
             return $jwt->criarChave(json_encode($objeto));
         }
 
@@ -34,17 +34,9 @@ class UsuarioService extends UsuarioDAO
         return $retorno;
     }
 
-    public function verificaPermissao($id, $message = "Acesso restrito")
+    public function verificaPermissao($id)
     {
-        if (!parent::verificaPermissao($id)) {
-            $retorno = new MsgRetorno;
-            $retorno->result = MsgRetorno::ERROR;
-            $retorno->code = MsgRetorno::CODE_ERROR_ACESSO_RESTRITO;
-            $retorno->message = $message;
-            http_response_code(401);
-            return $retorno;
-        }
-        return true;
+        return parent::verificaPermissao($id);
     }
 
     public function cadastrarUsuario($username, $senha)

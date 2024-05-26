@@ -38,6 +38,45 @@ class ImovelDAO extends MysqlFactory implements IImovelDAO {
         return true;
     }
 
+    public function editarImovel($id, $tipo_imovel, $id_proprietario, $endereco, $cidade, $estado, $CEP, $valor_aluguel, $area, $quartos, $banheiros, $vagas_garagem, $descricao)
+    {
+        $sql = "UPDATE imoveis set  tipo_imovel=IF(:tipoI='',tipo_imovel,:tipoI), 
+                                    id_proprietario=IF(:idP='',id_proprietario,:idP), 
+                                    endereco=IF(:endereco='',endereco,:endereco), 
+                                    cidade=IF(:cidade='',cidade,:cidade), 
+                                    estado=IF(:estado='',estado,:estado),
+                                    CEP=IF(:cep='',CEP,:cep),
+                                    valor_aluguel=IF(:valorA='',valor_aluguel,:valorA),
+                                    area=IF(:area='',area,:area),
+                                    quartos=IF(:quartos='',quartos,:quartos),
+                                    banheiros=IF(:banheiros='',banheiros,:banheiros),
+                                    vagas_garagem=IF(:vagasG='',vagas_garagem,:vagasG),
+                                    descricao=IF(:descr='',descricao,:descr)
+                                    WHERE id = :id";
+        try {
+            $retorno = $this->banco->executar(
+                $sql,
+                [
+                    "id" => $id,
+                    "tipoI" => $tipo_imovel,
+                    "idP" => $id_proprietario,
+                    "endereco" => $endereco,
+                    "cidade" => $cidade,
+                    "estado" => $estado,
+                    "cep" => $CEP,
+                    "valorA" => str_replace(",",".",$valor_aluguel),
+                    "area" => $area,
+                    "quartos" => $quartos,
+                    "banheiros" => $banheiros,
+                    "vagasG" => $vagas_garagem,
+                    "descr" => $descricao
+                ]
+            );
+        } catch (Exception $e) {
+            return "Erro ao inserir no banco. ".$e->getMessage();
+        }
+        return true;
+    }
 
     public function imovelExists($id)
     {
