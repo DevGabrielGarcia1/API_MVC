@@ -21,6 +21,9 @@
 
 
 
+
+
+
 //Cadastrar cliente
 {
     "nome": "", 
@@ -46,9 +49,41 @@
     "contrato_ativo": ""
 }
 
+
+
+
+//Cadastrar Proprietario
+{
+    "nome": "", 
+    "CPF": "", 
+    "data_nascimento": "", 
+    "telefone": "", 
+    "email": ""
+}
+//Editar Proprietario
+{
+    "id": "", 
+    "nome": "", 
+    "CPF": "", 
+    "data_nascimento": "", 
+    "telefone": "", 
+    "email": ""
+}
+//Listar Proprietario
+{
+    "id": "", 
+    "nome": "", 
+    "CPF": ""
+}
+
+
+
+
+
 //Cadastrar Imovel
 {
     "tipo_imovel": "", 
+    "id_proprietario": "", 
     "endereco": "", 
     "cidade": "", 
     "estado": "", 
@@ -60,6 +95,10 @@
     "vagas_garagem": "", 
     "descricao": ""
 }
+
+
+
+
 
 //Cadastrar Contrato
 {

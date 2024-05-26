@@ -1,0 +1,50 @@
+CREATE TABLE usuarios (
+    id int(3) PRIMARY KEY,
+    username varchar(15) UNIQUE,
+    senha varchar(64),
+    permissao int(1)
+);
+
+CREATE TABLE clientes (
+    id int(3) PRIMARY KEY,
+    username varchar(50),
+    CPF varchar(11) UNIQUE,
+    data_nascimento date,
+    telefone varchar(20),
+    email varchar(80)
+);
+
+CREATE TABLE proprietarios (
+    id int(3) PRIMARY KEY,
+    username varchar(50),
+    CPF varchar(11) UNIQUE,
+    data_nascimento date,
+    telefone varchar(20),
+    email varchar(80)
+);
+
+CREATE TABLE imoveis (
+    id int(3) PRIMARY KEY,
+    id_proprietario int(3) FOREIGN KEY REFERENCES proprietarios(id),
+    tipo_imovel varchar(25),
+    endereco varchar(50),
+    cidade varchar(25),
+    estado varchar(25),
+    CEP varchar(8),
+    valor_aluguel decimal(10,2),
+    area decimal(10,2),
+    quartos int(2),
+    banheiros int(2),
+    vagas_garagem int(2),
+    descricao text,
+    active int(1)
+);
+
+CREATE TABLE contratos (
+    id int(3) PRIMARY KEY,
+	id_imovel int(3) FOREIGN KEY REFERENCES imovel(id),
+	id_cliente int(3) FOREIGN KEY REFERENCES cliente(id),
+	data_inicio date,
+	data_fim date,
+	forma_pagamento varchar(50),
+);

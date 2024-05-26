@@ -8,7 +8,7 @@ use generic\MsgRetorno;
 
 class ImovelService extends ImovelDAO {
     
-    public function cadastrarImovel($tipo_imovel, $endereco, $cidade, $estado, $CEP, $valor_aluguel, $area, $quartos, $banheiros, $vagas_garagem, $descricao)
+    public function cadastrarImovel($tipo_imovel, $id_proprietario, $endereco, $cidade, $estado, $CEP, $valor_aluguel, $area, $quartos, $banheiros, $vagas_garagem, $descricao)
     {
         //Recupera o id e username
         $jwt = new JWTAuth();
@@ -26,7 +26,7 @@ class ImovelService extends ImovelDAO {
         }
 
         //Verifica campos
-        if ($tipo_imovel == "" || $endereco == "" || $cidade == "" || $estado == "" || $CEP == "" || $valor_aluguel == "" || $area == "" || $quartos == "" || $banheiros == "" || $vagas_garagem == "") {
+        if ($tipo_imovel == "" || $id_proprietario == "" || $endereco == "" || $cidade == "" || $estado == "" || $CEP == "" || $valor_aluguel == "" || $area == "" || $quartos == "" || $banheiros == "" || $vagas_garagem == "") {
             $retorno = new MsgRetorno;
             $retorno->result = MsgRetorno::ERROR;
             $retorno->code = MsgRetorno::CODE_ERROR_CAMPOS_OBRIGATORIOS;
@@ -36,7 +36,7 @@ class ImovelService extends ImovelDAO {
         }
 
         //Cadastra usuario e reporta a situação
-        $result = parent::cadastrarImovel($tipo_imovel, $endereco, $cidade, $estado, $CEP, $valor_aluguel, $area, $quartos, $banheiros, $vagas_garagem, $descricao);
+        $result = parent::cadastrarImovel($tipo_imovel, $id_proprietario, $endereco, $cidade, $estado, $CEP, $valor_aluguel, $area, $quartos, $banheiros, $vagas_garagem, $descricao);
         if ($result !== true) {
             $retorno = new MsgRetorno;
             $retorno->result = MsgRetorno::ERROR;

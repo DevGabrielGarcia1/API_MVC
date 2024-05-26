@@ -2,20 +2,19 @@
 
 namespace dao\mysql;
 
-use dao\interface\IClienteDAO;
+use dao\interface\IProprietarioDAO;
 use DateTime;
 use Exception;
 use generic\MysqlFactory;
-use generic\Retorno;
 
-class ClienteDAO extends MysqlFactory implements IClienteDAO
+class ProprietarioDAO extends MysqlFactory implements IProprietarioDAO
 {
 
-    public function cadastrarCliente($nome, $CPF, $data_nascimento, $telefone, $email)
+    public function cadastrarProprietario($nome, $CPF, $data_nascimento, $telefone, $email)
     {
         $dtNasc = DateTime::createFromFormat('d/m/Y', $data_nascimento);
 
-        $sql = "INSERT INTO clientes(nome, CPF, data_nascimento, telefone, email) VALUES (:nome, :cpf, :dtNasc, :tel, :email)";
+        $sql = "INSERT INTO proprietarios(nome, CPF, data_nascimento, telefone, email) VALUES (:nome, :cpf, :dtNasc, :tel, :email)";
         try {
             $retorno = $this->banco->executar(
                 $sql,
@@ -29,18 +28,18 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO
             );
         } catch (Exception $e) {
             if ($e->getCode() == 23000) {
-                return "Erro: Cliente já existe.";
+                return "Erro: Proprietário já existe.";
             }
             return "Erro ao inserir no banco.";
         }
         return true;
     }
 
-    public function editarCliente($id, $nome, $CPF, $data_nascimento, $telefone, $email)
+    public function editarProprietario($id, $nome, $CPF, $data_nascimento, $telefone, $email)
     {
         $dtNasc = DateTime::createFromFormat('d/m/Y', $data_nascimento);
         
-        $sql = "UPDATE clientes set nome=IF(:nome='',nome,:nome), 
+        $sql = "UPDATE proprietarios set nome=IF(:nome='',nome,:nome), 
                                     CPF=IF(:cpf='',CPF,:cpf), 
                                     data_nascimento=IF(:dtNasc='',data_nascimento,:dtNasc), 
                                     telefone=IF(:tel='',telefone,:tel), 
@@ -64,14 +63,14 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO
         return true;
     }
 
-    public function listarCliente($id = null, $nome = null, $CPF = null, $contrato_ativo = null)
+    public function listarProprietario($id = null, $nome = null, $CPF = null)
     {
         
-        $sql = "SELECT c.id, nome, CPF, data_nascimento, telefone, email,  con.data_fim IS NOT NULL as contrato_ativo FROM clientes as c LEFT JOIN contratos as con ON c.id = con.id_cliente WHERE";
+        $sql = "SELECT id, nome, CPF, data_nascimento, telefone, email FROM proprietarios WHERE";
         
         $where = array();
         if($id != "" || $id != NULL){
-            $sql .= " c.id = :id AND";
+            $sql .= " id = :id AND";
             $where['id'] = $id;
         }
         if($nome != "" || $nome != NULL){
@@ -81,10 +80,6 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO
         if($CPF != "" || $CPF != NULL){
             $sql .= " CPF = :cpf AND";
             $where['cpf'] = $CPF;
-        }
-        if($contrato_ativo != "" || $contrato_ativo){
-            $sql .= " (con.data_fim IS NOT NULL) = :con AND";
-            $where['con'] = $contrato_ativo;
         }
 
         $sql = substr($sql, 0, -4);
@@ -97,9 +92,9 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO
         return $retorno;
     }
 
-    public function listarClienteAll(){
+    public function listarProprietarioAll(){
 
-        $sql = "SELECT c.id, nome, CPF, data_nascimento, telefone, email, con.data_fim IS NOT NULL as contrato_ativo FROM clientes as c LEFT JOIN contratos as con ON c.id = con.id_cliente";
+        $sql = "SELECT id, nome, CPF, data_nascimento, telefone, email FROM proprietarios";
         try {
             $retorno = $this->banco->executar($sql);
         } catch (Exception $e) {
@@ -108,9 +103,9 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO
         return $retorno;
     }
 
-    public function clienteExists($id)
+    public function proprietarioExists($id)
     {
-        $sql = "SELECT count(id) as result FROM clientes WHERE id = :id";
+        $sql = "SELECT count(id) as result FROM proprietarios WHERE id = :id";
         try {
             $retorno = $this->banco->executar($sql, ["id" => $id]);
         } catch (Exception $e) {
