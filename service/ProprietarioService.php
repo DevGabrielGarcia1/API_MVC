@@ -16,9 +16,8 @@ class ProprietarioService extends ProprietarioDAO {
 
         //Verifica a permissão
         $usuario = new UsuarioService();
-        $usuario = $usuario->verificaPermissao($jwtSession['id']);
-        if (!$usuario) {
-            return $usuario;
+        if (!$usuario->verificaPermissao($jwtSession['id'])) {
+            return MsgRetorno::defaultMessage_AcessoRestrito();
         }
 
         //Verifica campos
@@ -57,9 +56,8 @@ class ProprietarioService extends ProprietarioDAO {
 
         //Verifica a permissão
         $usuario = new UsuarioService();
-        $usuario = $usuario->verificaPermissao($jwtSession['id']);
-        if (!$usuario) {
-            return $usuario;
+        if (!$usuario->verificaPermissao($jwtSession['id'])) {
+            return MsgRetorno::defaultMessage_AcessoRestrito();
         }
 
         //Verifica campos
@@ -98,9 +96,8 @@ class ProprietarioService extends ProprietarioDAO {
 
         //Verifica a permissão
         $usuario = new UsuarioService();
-        $usuario = $usuario->verificaPermissao($jwtSession['id']);
-        if (!$usuario) {
-            return $usuario;
+        if (!$usuario->verificaPermissao($jwtSession['id'])) {
+            return MsgRetorno::defaultMessage_AcessoRestrito();
         }
         
         //Verifica campos
@@ -135,9 +132,8 @@ class ProprietarioService extends ProprietarioDAO {
 
         //Verifica a permissão
         $usuario = new UsuarioService();
-        $usuario = $usuario->verificaPermissao($jwtSession['id']);
-        if (!$usuario) {
-            return $usuario;
+        if (!$usuario->verificaPermissao($jwtSession['id'])) {
+            return MsgRetorno::defaultMessage_AcessoRestrito();
         }
 
         //Listar todos usuarios

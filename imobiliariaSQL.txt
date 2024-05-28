@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS imoveis (
     banheiros int(2),
     vagas_garagem int(2),
     descricao text,
-    active int(1),
+    active int(1) DEFAULT 1,
     FOREIGN KEY (id_proprietario) REFERENCES proprietarios(id)
 );
 

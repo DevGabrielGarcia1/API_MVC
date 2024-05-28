@@ -87,7 +87,7 @@ class ProprietarioDAO extends MysqlFactory implements IProprietarioDAO
         try {
             $retorno = $this->banco->executar($sql, $where);
         } catch (Exception $e) {
-            return "Erro ao buscar no banco. ".$e->getMessage();
+            return "Erro ao buscar no banco.";
         }
         return $retorno;
     }
