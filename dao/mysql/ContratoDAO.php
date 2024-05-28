@@ -59,7 +59,7 @@ class ContratoDAO extends MysqlFactory implements IContratoDAO
 
     public function listarContratos($id, $id_imovel, $id_cliente, $data_inicio, $data_fim, $forma_pagamento, $contrato_ativo)
     {
-        
+
         $dtInicio = DateTime::createFromFormat('d/m/Y', $data_inicio);
         $dtFim = DateTime::createFromFormat('d/m/Y', $data_fim);
 
@@ -81,9 +81,9 @@ class ContratoDAO extends MysqlFactory implements IContratoDAO
         if($data_inicio!= ""){
             $sql .= " data_inicio like :dtIni AND";
             try {
-                $where['dtFim'] = "%".$dtInicio->format('Y-m-d')."%";
+                $where['dtIni'] = "%".$dtInicio->format('Y-m-d')."%";
             } catch (\Throwable $th) {
-                $where['dtFim'] = "%".$data_inicio."%";
+                $where['dtIni'] = "%".$data_inicio."%";
             }
         }
         if($data_fim != ""){
@@ -96,8 +96,8 @@ class ContratoDAO extends MysqlFactory implements IContratoDAO
             
         }
         if($forma_pagamento != ""){
-            $sql .= " forma_pagamento = :pag AND";
-            $where['pag'] = $forma_pagamento;
+            $sql .= " forma_pagamento like :pag AND";
+            $where['pag'] = "%".$forma_pagamento."%";
         }
         if($contrato_ativo != ""){
             $sql .= " (data_fim IS NULL) = :con AND";

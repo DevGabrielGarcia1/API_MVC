@@ -29,7 +29,7 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO
             );
         } catch (Exception $e) {
             if ($e->getCode() == 23000) {
-                return "Erro: Cliente já existe.";
+                return "Erro: CPF já existe.";
             }
             return "Erro ao inserir no banco.";
         }

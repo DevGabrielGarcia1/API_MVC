@@ -31,7 +31,7 @@ class ImovelDAO extends MysqlFactory implements IImovelDAO {
             );
         } catch (Exception $e) {
             if ($e->getCode() == 23000) {
-                return "Erro: Imóvel já existe.";
+                return "Erro: Problema com ID do proprietário.";
             }
             return "Erro ao inserir no banco.";
         }

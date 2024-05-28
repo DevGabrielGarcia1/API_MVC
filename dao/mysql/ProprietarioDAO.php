@@ -28,7 +28,7 @@ class ProprietarioDAO extends MysqlFactory implements IProprietarioDAO
             );
         } catch (Exception $e) {
             if ($e->getCode() == 23000) {
-                return "Erro: Proprietário já existe.";
+                return "Erro: CPF já existe.";
             }
             return "Erro ao inserir no banco.";
         }

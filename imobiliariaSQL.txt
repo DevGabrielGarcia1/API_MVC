@@ -2,14 +2,14 @@ CREATE DATABASE IF NOT EXISTS `imobiliaria` DEFAULT CHARACTER SET utf8mb4 COLLAT
 USE `imobiliaria`;
 
 CREATE TABLE IF NOT EXISTS usuarios (
-    id int(3) PRIMARY KEY,
+    id int(3) PRIMARY KEY AUTO_INCREMENT,
     username varchar(15) UNIQUE,
     senha varchar(64),
-    permissao int(1)
+    permissao int(1) DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS clientes (
-    id int(3) PRIMARY KEY,
+    id int(3) PRIMARY KEY AUTO_INCREMENT,
     nome varchar(50),
     CPF varchar(11) UNIQUE,
     data_nascimento date,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS clientes (
 );
 
 CREATE TABLE IF NOT EXISTS proprietarios (
-    id int(3) PRIMARY KEY,
+    id int(3) PRIMARY KEY AUTO_INCREMENT,
     nome varchar(50),
     CPF varchar(11) UNIQUE,
     data_nascimento date,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS proprietarios (
 );
 
 CREATE TABLE IF NOT EXISTS imoveis (
-    id int(3) PRIMARY KEY,
+    id int(3) PRIMARY KEY AUTO_INCREMENT,
     id_proprietario int(3),
     tipo_imovel varchar(25),
     endereco varchar(50),
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS imoveis (
 );
 
 CREATE TABLE IF NOT EXISTS contratos (
-    id int(3) PRIMARY KEY,
+    id int(3) PRIMARY KEY AUTO_INCREMENT,
 	id_imovel int(3),
 	id_cliente int(3),
 	data_inicio date,
@@ -54,3 +54,5 @@ CREATE TABLE IF NOT EXISTS contratos (
     FOREIGN KEY (id_imovel) REFERENCES imoveis(id),
     FOREIGN KEY (id_cliente) REFERENCES clientes(id)
 );
+
+INSERT INTO usuarios (username, senha, permissao) VALUES ('admin', 'admin', '0');
