@@ -1,11 +1,23 @@
-CREATE TABLE usuarios (
+CREATE DATABASE IF NOT EXISTS `imobiliaria` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `imobiliaria`;
+
+CREATE TABLE IF NOT EXISTS usuarios (
     id int(3) PRIMARY KEY,
     username varchar(15) UNIQUE,
     senha varchar(64),
     permissao int(1)
 );
 
-CREATE TABLE clientes (
+CREATE TABLE IF NOT EXISTS clientes (
+    id int(3) PRIMARY KEY,
+    nome varchar(50),
+    CPF varchar(11) UNIQUE,
+    data_nascimento date,
+    telefone varchar(20),
+    email varchar(80)
+);
+
+CREATE TABLE IF NOT EXISTS proprietarios (
     id int(3) PRIMARY KEY,
     username varchar(50),
     CPF varchar(11) UNIQUE,
@@ -14,18 +26,9 @@ CREATE TABLE clientes (
     email varchar(80)
 );
 
-CREATE TABLE proprietarios (
+CREATE TABLE IF NOT EXISTS imoveis (
     id int(3) PRIMARY KEY,
-    username varchar(50),
-    CPF varchar(11) UNIQUE,
-    data_nascimento date,
-    telefone varchar(20),
-    email varchar(80)
-);
-
-CREATE TABLE imoveis (
-    id int(3) PRIMARY KEY,
-    id_proprietario int(3) FOREIGN KEY REFERENCES proprietarios(id),
+    id_proprietario int(3),
     tipo_imovel varchar(25),
     endereco varchar(50),
     cidade varchar(25),
@@ -37,14 +40,17 @@ CREATE TABLE imoveis (
     banheiros int(2),
     vagas_garagem int(2),
     descricao text,
-    active int(1)
+    active int(1),
+    FOREIGN KEY (id_proprietario) REFERENCES proprietarios(id)
 );
 
-CREATE TABLE contratos (
+CREATE TABLE IF NOT EXISTS contratos (
     id int(3) PRIMARY KEY,
-	id_imovel int(3) FOREIGN KEY REFERENCES imovel(id),
-	id_cliente int(3) FOREIGN KEY REFERENCES cliente(id),
+	id_imovel int(3),
+	id_cliente int(3),
 	data_inicio date,
 	data_fim date,
 	forma_pagamento varchar(50),
+    FOREIGN KEY (id_imovel) REFERENCES imoveis(id),
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id)
 );

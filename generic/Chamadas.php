@@ -13,7 +13,7 @@ class Chamadas
             "usuario/cadastrar" => new Acao("service\UsuarioService", "cadastrarUsuario",[Acao::POST]),
             "usuario/editar" => new Acao("service\UsuarioService", "editarUsuarioAtual",[Acao::POST]),
             "usuario/remover" => new Acao("service\UsuarioService", "removerUsuario",[Acao::DELETE]),
-            "usuario/listar" => new Acao("service\UsuarioService", "listarUsuarios",[Acao::POST]),
+            "usuario/listar" => new Acao("service\UsuarioService", "listarUsuarios",[Acao::GET, Acao::POST]),
 
             "cliente/cadastrar" => new Acao("service\ClienteService", "cadastrarCliente",[Acao::POST]),
             "cliente/editar" => new Acao("service\ClienteService", "editarCliente",[Acao::POST]),
