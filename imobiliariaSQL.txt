@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS clientes (
 
 CREATE TABLE IF NOT EXISTS proprietarios (
     id int(3) PRIMARY KEY,
-    username varchar(50),
+    nome varchar(50),
     CPF varchar(11) UNIQUE,
     data_nascimento date,
     telefone varchar(20),
