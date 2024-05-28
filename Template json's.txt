@@ -1,24 +1,30 @@
 //Autenticar
+Rotas: usuario/autenticar
 {
     "username": "",
     "senha": ""
 }
 
 //Cadastrar Usuário
+Rota: usuario/cadastrar
 {
     "username": "",
     "senha": ""
 }
 //Editar Usuário
+Rota: usuario/editar
 {
     "senha_atual": "",
     "senha_nova": ""
 }
 //Remover Usuário
+Rota: usuario/remover
 {
     "id": ""
 }
-
+//Listar Usuário
+Rota: usuario/listar
+<Vazio>
 
 
 ------------
@@ -26,6 +32,7 @@
 
 
 //Cadastrar cliente
+Rota: cliente/cadastrar
 {
     "nome": "", 
     "CPF": "", 
@@ -34,6 +41,7 @@
     "email": ""
 }
 //Editar cliente
+Rota: cliente/editar
 {
     "id": "", 
     "nome": "", 
@@ -43,12 +51,16 @@
     "email": ""
 }
 //Listar cliente
+Rota: cliente/listar
 {
     "id": "", 
     "nome": "", 
     "CPF": "", 
     "contrato_ativo": ""
 }
+//Listar todos
+Rota: cliente/listar/all
+<vazio>
 
 
 
@@ -57,6 +69,7 @@
 
 
 //Cadastrar Proprietario
+Rota: proprietario/cadastrar
 {
     "nome": "", 
     "CPF": "", 
@@ -65,6 +78,7 @@
     "email": ""
 }
 //Editar Proprietario
+Rota: proprietario/editar
 {
     "id": "", 
     "nome": "", 
@@ -74,12 +88,15 @@
     "email": ""
 }
 //Listar Proprietario
+Rota: proprietario/listar
 {
     "id": "", 
     "nome": "", 
     "CPF": ""
 }
-
+//Listar todos
+Rota: proprietario/listar/all
+<vazio>
 
 
 ------------
@@ -87,6 +104,7 @@
 
 
 //Cadastrar Imovel
+Rota: imovel/cadastrar
 {
     "tipo_imovel": "", 
     "id_proprietario": "", 
@@ -102,6 +120,7 @@
     "descricao": ""
 }
 //Editar Imovel
+Rota: imovel/editar
 {
     "id": "",
     "tipo_imovel": "", 
@@ -117,7 +136,18 @@
     "vagas_garagem": "", 
     "descricao": ""
 }
+//Desativar imóvel 
+Rota: imovel/desativar
+{
+    "id": ""
+}
+//Ativar imóvel
+Rota: imovel/ativar
+{
+    "id": ""
+}
 //Listar Imóvel
+Rota: imovel/listar
 {
     "id": "",
     "tipo_imovel": "",
@@ -138,7 +168,12 @@
     "max_vagas_garagem": "",
     "active": ""
 }
+//Listar todos imóveis
+Rota: imovel/listar/all
+<vazio>
+
 //Listar Imóvel public
+Rota: public/imovel/listar
 {
     "tipo_imovel": "",
     "endereco": "",
@@ -156,14 +191,9 @@
     "vagas_garagem": "",
     "max_vagas_garagem": ""
 }
-//Desativar imóvel 
-{
-    "id": ""
-}
-//Ativar imóvel
-{
-    "id": ""
-}
+//Listar todos imóveis public
+Rota: public/imovel/listar/all
+<vazio>
 
 
 
@@ -172,6 +202,7 @@
 
 
 //Cadastrar Contrato
+Rota: contrato/cadastrar
 {
     "id_imovel": "", 
     "id_cliente": "", 
@@ -179,16 +210,19 @@
     "forma_pagamento": ""
 }
 //Editar Contrato
+Rota: contrato/editar
 {
     "id": "",
     "forma_pagamento": ""
 }
 //Finalizar Contrato
+Rota: contrato/finalizar
 {
     "id": "",
     "data_fim": ""
 }
 //Listar Contrato
+Rota: contrato/listar
 {
     "id": "",
     "id_imovel": "", 
@@ -198,4 +232,10 @@
     "forma_pagamento": "",
     "contrato_ativo": ""
 }
+//Listar contratos ativos
+Rota: contrato/listar/ativos
+<vazio>
 
+//Listar todos contratos
+Rota: contrato/listar/all
+<vazio>
