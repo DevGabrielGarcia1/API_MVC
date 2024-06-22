@@ -1,6 +1,6 @@
 <?php
 spl_autoload_register(function ($class){
-    $raiz = "/API_MVC/";
+    $raiz = "/API_MVC-SistemaAlocacaoDeImoveis/";
     
     if(!file_exists($_SERVER["DOCUMENT_ROOT"].$raiz.$class.".php")){;
         //Resolve o problema se a pasta do projeto não estiver na raiz do xampp (htdocs)
