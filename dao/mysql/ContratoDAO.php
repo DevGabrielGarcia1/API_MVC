@@ -7,14 +7,14 @@ use DateTime;
 use Exception;
 use generic\MsgRetorno;
 use generic\MysqlFactory;
-use stdClass;
+use generic\Utils;
 
 class ContratoDAO extends MysqlFactory implements IContratoDAO
 {
 
     public function cadastrarContrato($id_imovel, $id_cliente, $data_inicio, $forma_pagamento)
     {
-        $dtInicio = DateTime::createFromFormat('d/m/Y', $data_inicio);
+        $dtInicio = Utils::detectDate($data_inicio);
 
         $sql = "INSERT INTO contratos(id_imovel, id_cliente, data_inicio, forma_pagamento) VALUES (:id_imovel, :id_cliente, :dt_inicio, :pagamento)";
         try {
@@ -46,7 +46,7 @@ class ContratoDAO extends MysqlFactory implements IContratoDAO
 
     public function finalizarContrato($id, $data_fim)
     {
-        $dtFim = DateTime::createFromFormat('d/m/Y', $data_fim);
+        $dtFim = Utils::detectDate($data_fim);
         
         $sql = "UPDATE contratos SET data_fim = :dt_fim WHERE id = :id";
         try {
@@ -60,8 +60,8 @@ class ContratoDAO extends MysqlFactory implements IContratoDAO
     public function listarContratos($id, $id_imovel, $id_cliente, $data_inicio, $data_fim, $forma_pagamento, $contrato_ativo)
     {
 
-        $dtInicio = DateTime::createFromFormat('d/m/Y', $data_inicio);
-        $dtFim = DateTime::createFromFormat('d/m/Y', $data_fim);
+        $dtInicio = Utils::detectDate($data_inicio);
+        $dtFim = Utils::detectDate($data_fim);
 
         $sql = "SELECT  id, id_imovel, id_cliente, DATE_FORMAT(data_inicio,'%d/%m/%Y') as data_inicio, DATE_FORMAT(data_fim,'%d/%m/%Y') as data_fim, forma_pagamento, data_fim IS NULL as contrato_ativo FROM contratos WHERE";
         

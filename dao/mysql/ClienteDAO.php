@@ -6,14 +6,14 @@ use dao\interface\IClienteDAO;
 use DateTime;
 use Exception;
 use generic\MysqlFactory;
-use generic\Retorno;
+use generic\Utils;
 
 class ClienteDAO extends MysqlFactory implements IClienteDAO
 {
 
     public function cadastrarCliente($nome, $CPF, $data_nascimento, $telefone, $email)
     {
-        $dtNasc = DateTime::createFromFormat('d/m/Y', $data_nascimento);
+        $dtNasc = Utils::detectDate($data_nascimento);
 
         $sql = "INSERT INTO clientes(nome, CPF, data_nascimento, telefone, email) VALUES (:nome, :cpf, :dtNasc, :tel, :email)";
         try {
@@ -38,7 +38,7 @@ class ClienteDAO extends MysqlFactory implements IClienteDAO
 
     public function editarCliente($id, $nome, $CPF, $data_nascimento, $telefone, $email)
     {
-        $dtNasc = DateTime::createFromFormat('d/m/Y', $data_nascimento);
+        $dtNasc = Utils::detectDate($data_nascimento);
         
         $sql = "UPDATE clientes set nome=IF(:nome='',nome,:nome), 
                                     CPF=IF(:cpf='',CPF,:cpf), 

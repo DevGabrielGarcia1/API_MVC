@@ -6,14 +6,15 @@ use dao\interface\IProprietarioDAO;
 use DateTime;
 use Exception;
 use generic\MysqlFactory;
+use generic\Utils;
 
 class ProprietarioDAO extends MysqlFactory implements IProprietarioDAO
 {
 
     public function cadastrarProprietario($nome, $CPF, $data_nascimento, $telefone, $email)
     {
-        $dtNasc = DateTime::createFromFormat('d/m/Y', $data_nascimento);
-
+        $dtNasc = Utils::detectDate($data_nascimento);
+        
         $sql = "INSERT INTO proprietarios(nome, CPF, data_nascimento, telefone, email) VALUES (:nome, :cpf, :dtNasc, :tel, :email)";
         try {
             $retorno = $this->banco->executar(
