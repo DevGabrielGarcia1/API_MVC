@@ -38,7 +38,7 @@ class ProprietarioDAO extends MysqlFactory implements IProprietarioDAO
 
     public function editarProprietario($id, $nome, $CPF, $data_nascimento, $telefone, $email)
     {
-        $dtNasc = DateTime::createFromFormat('d/m/Y', $data_nascimento);
+        $dtNasc = Utils::detectDate($data_nascimento);
         
         $sql = "UPDATE proprietarios set nome=IF(:nome='',nome,:nome), 
                                     CPF=IF(:cpf='',CPF,:cpf), 
