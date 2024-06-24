@@ -206,7 +206,7 @@ class ImovelDAO extends MysqlFactory implements IImovelDAO {
 
     public function listarImoveisAllPublic()
     {
-        $sql = "SELECT i.id, tipo_imovel, endereco, cidade, estado, CEP, valor_aluguel, area, quartos, banheiros, vagas_garagem, descricao FROM imoveis as i JOIN contratos as c ON i.id = c.id_imovel WHERE c.data_fim IS NOT NULL AND active = 1";
+        $sql = "SELECT i.id, tipo_imovel, endereco, cidade, estado, CEP, valor_aluguel, area, quartos, banheiros, vagas_garagem, descricao FROM imoveis as i LEFT JOIN contratos as c ON i.id = c.id_imovel WHERE ((c.id_imovel IS NOT NULL AND c.data_fim IS NOT NULL) OR c.id_imovel IS NULL) AND active = 1";
         return $this->listImoveisAll($sql);
     }
 
